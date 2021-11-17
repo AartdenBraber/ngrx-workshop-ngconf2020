@@ -56,28 +56,13 @@ export class BooksPageComponent implements OnInit {
 
   saveBook(book: BookRequiredProps) {
     this.store.dispatch(BooksPageActions.createBook({ book }));
-    this.booksService.create(book).subscribe((createdBook) => {
-      this.store.dispatch(
-        BooksApiActions.createBookSuccess({ book: createdBook })
-      );
-      this.clearSelectedBook();
-    });
   }
 
   updateBook(book: BookModel) {
     this.store.dispatch(BooksPageActions.updateBook({ id: book.id, book }));
-    this.booksService.update(book.id, book).subscribe((updatedBook) => {
-      this.store.dispatch(
-        BooksApiActions.updateBookSuccess({ book: updatedBook })
-      );
-      this.clearSelectedBook();
-    });
   }
 
   onDelete(book: BookModel) {
     this.store.dispatch(BooksPageActions.deleteBook({ id: book.id }));
-    this.booksService.delete(book.id).subscribe(() => {
-      this.store.dispatch(BooksApiActions.deleteBookSuccess({ id: book.id }));
-    });
   }
 }

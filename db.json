@@ -2,21 +2,9 @@
   "books": [
     {
       "id": "408c6851-7b7a-439e-b6db-9fb65ea61071",
-      "name": "The Adventures of Pinocchio 2",
+      "name": "The Adventures of Pinocchio 23",
       "earnings": "85000001",
       "description": ""
-    },
-    {
-      "id": "1da2f5bf-77c1-455c-b491-1065ca615fb1",
-      "name": "dwadawd",
-      "earnings": "123123",
-      "description": "DAWDawd"
-    },
-    {
-      "id": "24462487-decf-4353-994f-04588f112a78",
-      "name": "dwadawd",
-      "earnings": "123123",
-      "description": "DAWDawd"
     },
     {
       "id": "86eb620b-1e53-44e0-8cff-801676a2e239",
