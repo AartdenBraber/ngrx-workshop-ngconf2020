@@ -2,50 +2,56 @@ import { createReducer, on, Action, createSelector } from "@ngrx/store";
 import { BookModel, calculateBooksGrossEarnings } from "src/app/shared/models";
 import { BooksPageActions, BooksApiActions } from "src/app/books/actions";
 import { produceOn } from "../helpers/produceOn";
+import { createEntityAdapter, EntityState } from "@ngrx/entity";
+import produce from "immer";
 
-export interface State {
-  collection: Array<BookModel>;
-  activeBookId: BookModel["id"] | null;
+export interface State extends EntityState<BookModel> {
+  activeBookId: BookModel["id"] | null | undefined;
 }
 
-export const initialState: State = {
-  collection: [],
+const adapter = createEntityAdapter<BookModel>();
+
+export const initialState: State = adapter.getInitialState({
   activeBookId: null,
-};
+});
 
 export const booksReducer = createReducer(
   initialState,
-  produceOn(BooksPageActions.enter, (draft, action) => {
-    draft = initialState;
-  }),
+  on(
+    BooksPageActions.enter,
+    produce((draft, action) => {
+      draft = initialState;
+    })
+  ),
 
-  produceOn(BooksPageActions.selectBook, (draft, action) => {
-    draft.activeBookId = action.id;
-  }),
-  produceOn(BooksPageActions.clearSelectedBook, (draft, action) => {
-    draft.activeBookId = null;
-  }),
+  on(
+    BooksPageActions.selectBook,
+    produce((draft, action) => {
+      draft.activeBookId = action.id;
+    })
+  ),
+  on(
+    BooksPageActions.clearSelectedBook,
+    produce((draft, action) => {
+      draft.activeBookId = `undefined-${Math.random()}`; // make sure it never refers to the id of an entity, but also always trigger the change detection
+    })
+  ),
 
-  produceOn(BooksApiActions.loadBooksSuccess, (draft, action) => {
-    draft.collection = action.books;
-  }),
+  on(BooksApiActions.loadBooksSuccess, (state, action) =>
+    adapter.setAll(action.books, state)
+  ),
 
-  produceOn(BooksApiActions.deleteBookSuccess, (draft, action) => {
-    draft.collection = draft.collection.filter((book) => book.id !== action.id);
-  }),
+  on(BooksApiActions.deleteBookSuccess, (state, action) =>
+    adapter.removeOne(action.id, state)
+  ),
 
-  produceOn(BooksApiActions.createBookSuccess, (draft, action) => {
-    draft.collection.push(action.book);
-  }),
+  on(BooksApiActions.createBookSuccess, (state, action) =>
+    adapter.addOne(action.book, state)
+  ),
 
-  produceOn(BooksApiActions.updateBookSuccess, (draft, action) => {
-    for (const [index, book] of draft.collection.entries()) {
-      if (book.id === action.book.id) {
-        draft.collection[index] = action.book;
-        return; // save resources
-      }
-    }
-  })
+  on(BooksApiActions.updateBookSuccess, (state, action) =>
+    adapter.updateOne({ id: action.book.id, changes: action.book }, state)
+  )
 );
 
 // Make pre-Ivy happy by providing a 'real' function
@@ -56,16 +62,16 @@ export function reducer(state: State | undefined, action: Action) {
 /**
  * 'Getter' selectors
  */
-export const selectAll = (state: State) => state.collection;
 export const selectActiveBookId = (state: State) => state.activeBookId;
-
+export const { selectEntities, selectAll, selectIds, selectTotal } =
+  adapter.getSelectors();
 /**
  * Complex selectors
  */
 export const selectActiveBook = createSelector(
-  selectAll,
+  selectEntities,
   selectActiveBookId,
-  (books, activeBookId) => books.find((book) => book.id === activeBookId)
+  (entities, activeBookId) => (activeBookId ? entities[activeBookId] : null)
 );
 
 export const selectEarningsTotal = createSelector(

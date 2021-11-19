@@ -6,7 +6,6 @@ import {
   calculateBooksGrossEarnings,
   BookRequiredProps,
 } from "src/app/shared/models";
-import { BooksService } from "src/app/shared/services";
 import {
   selectActiveBook,
   selectAllBooks,
@@ -23,12 +22,10 @@ import { BooksApiActions, BooksPageActions } from "../../actions";
 export class BooksPageComponent implements OnInit {
   total$ = this.store.select(selectBooksEarningsTotal);
   books$ = this.store.select(selectAllBooks);
-  activeBook$ = this.store.select(selectActiveBook);
+  activeBook$ = this.store
+    .select(selectActiveBook)
 
-  constructor(
-    private store: Store<State>,
-    private booksService: BooksService
-  ) {}
+  constructor(private store: Store<State>) {}
 
   ngOnInit() {
     this.store.dispatch(BooksPageActions.enter());

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { createEffect, Actions, ofType } from "@ngrx/effects";
-import { concatMap, exhaustMap, map, mergeMap } from "rxjs/operators";
+import { of } from "rxjs";
+import { concatMap, exhaustMap, map, mergeMap, tap } from "rxjs/operators";
 import { BooksService } from "../shared/services";
 import { BooksPageActions, BooksApiActions } from "./actions";
 
@@ -27,6 +28,17 @@ export class BooksApiEffects {
           .create(action.book)
           .pipe(map((book) => BooksApiActions.createBookSuccess({ book })))
       )
+    );
+  });
+
+  /**
+   * CLear the book as soon as a book is succesfully created
+   */
+  createBookSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BooksApiActions.createBookSuccess),
+      // Just trigger this for the first event, we don't care about the others
+      exhaustMap(() => of(BooksPageActions.clearSelectedBook()))
     );
   });
 

@@ -1,16 +1,22 @@
 {
   "books": [
     {
-      "id": "408c6851-7b7a-439e-b6db-9fb65ea61071",
-      "name": "The Adventures of Pinocchio 23",
-      "earnings": "85000001",
-      "description": ""
+      "id": "0be437fb-63fd-4a0c-b10b-89c627de3c96",
+      "name": "dwadaw",
+      "earnings": "10",
+      "description": null
     },
     {
-      "id": "86eb620b-1e53-44e0-8cff-801676a2e239",
-      "name": "awdaw",
-      "earnings": "213",
-      "description": "dwadw"
+      "id": "2d80bd32-ee83-409e-8109-31b28b06f162",
+      "name": "dwadaw",
+      "earnings": "85000000",
+      "description": null
+    },
+    {
+      "id": "fba39623-58d9-47fd-ac47-6e53ea58b753",
+      "name": "dwadw",
+      "earnings": "85000000",
+      "description": null
     }
   ]
 }
