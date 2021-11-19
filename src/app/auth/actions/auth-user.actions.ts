@@ -1,1 +1,11 @@
-import { createAction } from "@ngrx/store";
+import { createAction, props } from "@ngrx/store";
+import { UserModel } from "src/app/shared/models";
+
+export const enter = createAction(`[Auth user] enter`);
+
+export const logout = createAction(`[Auth user] Logout`);
+
+export const login = createAction(
+  `[Auth user] Login`,
+  props<{ username: string; password: string }>()
+);

@@ -4,10 +4,12 @@ import * as fromBooks from "./books.reducer";
 
 export interface State {
   books: fromBooks.State;
+  auth: fromAuth.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
   books: fromBooks.reducer,
+  auth: fromAuth.reducer,
 };
 
 export const metaReducers: MetaReducer<State>[] = [];
@@ -27,4 +29,18 @@ export const selectActiveBook = createSelector(
 export const selectBooksEarningsTotal = createSelector(
   selectBooksState,
   fromBooks.selectEarningsTotal
+);
+
+/**
+ * User state
+ */
+export const selectAuthState = (state: State) => state.auth;
+export const selectUser = createSelector(selectAuthState, fromAuth.selectUser);
+export const selectGettingStatus = createSelector(
+  selectAuthState,
+  fromAuth.selectGettingStatus
+);
+export const selectError = createSelector(
+  selectAuthState,
+  fromAuth.selectError
 );

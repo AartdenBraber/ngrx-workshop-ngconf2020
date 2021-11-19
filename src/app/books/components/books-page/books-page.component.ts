@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 import {
   BookModel,
   calculateBooksGrossEarnings,
@@ -24,6 +25,7 @@ export class BooksPageComponent implements OnInit {
   books$ = this.store.select(selectAllBooks);
   activeBook$ = this.store
     .select(selectActiveBook)
+    .pipe(tap((activebook) => console.log(activebook)));
 
   constructor(private store: Store<State>) {}
 

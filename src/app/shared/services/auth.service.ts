@@ -5,7 +5,7 @@ import * as uuid from "uuid/v4";
 import { UserModel } from "../models/user.model";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AuthService {
   login(username: string, password: string) {
@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   getStatus(): Observable<null | UserModel> {
-    return timer(750).pipe(
+    return timer(0).pipe(
       map(() => {
         const userString = localStorage.getItem("auth");
 

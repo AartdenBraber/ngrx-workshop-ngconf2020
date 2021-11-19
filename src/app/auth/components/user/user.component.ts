@@ -1,22 +1,26 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { UserModel } from "src/app/shared/models";
 import { Store } from "@ngrx/store";
 import { State } from "src/app/shared/state";
 import { AuthUserActions } from "../../actions";
+import { selectUser } from "src/app/shared/state";
 
 @Component({
   selector: "app-user",
   templateUrl: "./user.component.html",
-  styleUrls: ["./user.component.css"]
+  styleUrls: ["./user.component.css"],
 })
-export class UserComponent {
-  user$: Observable<UserModel | null> = of({
-    id: "1",
-    username: "NgRx Learner"
-  });
+export class UserComponent implements OnInit {
+  user$ = this.store.select(selectUser);
 
-  onLogout() {
-    // Not Implemented
+  constructor(private store: Store<State>) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(AuthUserActions.enter());
+  }
+
+  handleLogout() {
+    this.store.dispatch(AuthUserActions.logout());
   }
 }
