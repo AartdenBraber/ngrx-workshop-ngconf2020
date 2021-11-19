@@ -11,14 +11,10 @@ import { selectUser } from "src/app/shared/state";
   templateUrl: "./user.component.html",
   styleUrls: ["./user.component.css"],
 })
-export class UserComponent implements OnInit {
+export class UserComponent {
   user$ = this.store.select(selectUser);
 
   constructor(private store: Store<State>) {}
-
-  ngOnInit(): void {
-    this.store.dispatch(AuthUserActions.enter());
-  }
 
   handleLogout() {
     this.store.dispatch(AuthUserActions.logout());

@@ -6,9 +6,9 @@ import { AuthUserActions } from "../../actions";
 import { LoginEvent } from "../login-form";
 import {
   State,
-  selectError,
+  selectAuthError,
   selectUser,
-  selectGettingStatus,
+  selectGettingAuthStatus,
 } from "src/app/shared/state";
 
 @Component({
@@ -17,9 +17,9 @@ import {
   styleUrls: ["./login-page.component.css"],
 })
 export class LoginPageComponent {
-  gettingStatus$ = this.store.select(selectGettingStatus);
+  gettingStatus$ = this.store.select(selectGettingAuthStatus);
   user$ = this.store.select(selectUser);
-  error$ = this.store.select(selectError);
+  error$ = this.store.select(selectAuthError);
 
   constructor(private store: Store<State>) {}
 

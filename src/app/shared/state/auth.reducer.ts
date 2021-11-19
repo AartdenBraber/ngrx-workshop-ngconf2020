@@ -4,14 +4,14 @@ import { AuthApiActions, AuthUserActions } from "src/app/auth/actions";
 import produce from "immer";
 
 export interface State {
-  user: UserModel | null;
   gettingStatus: boolean;
+  user: UserModel | null;
   error: string | null;
 }
 
 export const initialState: State = {
+  gettingStatus: true, // we start off by getting the status
   user: null,
-  gettingStatus: false,
   error: null,
 };
 
@@ -21,6 +21,7 @@ export const authReducer = createReducer(
     AuthApiActions.loginSuccess,
     AuthApiActions.isCurrentlyLoggedIn,
     produce((draft, action) => {
+      draft.gettingStatus = false;
       draft.user = action.user;
       draft.error = null;
     })
@@ -28,13 +29,16 @@ export const authReducer = createReducer(
   on(
     AuthApiActions.loginFailure,
     produce((draft, action) => {
+      draft.gettingStatus = false;
       draft.user = null;
       draft.error = action.error;
     })
   ),
   on(
     AuthUserActions.logout,
+    AuthApiActions.isNotCurrentlyLoggedIn,
     produce((draft, action) => {
+      draft.gettingStatus = false;
       draft.user = null;
       draft.error = null;
     })

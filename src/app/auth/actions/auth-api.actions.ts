@@ -16,6 +16,6 @@ export const isCurrentlyLoggedIn = createAction(
   props<{ user: UserModel }>()
 );
 
-export const isCurrentlyNotLoggedIn = createAction(
-  `[Auth api] User is currently NOT logged in`
+export const isNotCurrentlyLoggedIn = createAction(
+  `[Auth api] User is not currently logged in`
 );

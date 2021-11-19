@@ -19,15 +19,15 @@ import { AppComponent } from "./app.component";
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot([
-      { path: "", pathMatch: "full", redirectTo: "/books" }
+      { path: "", pathMatch: "full", redirectTo: "/books" },
     ]),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument(),
     EffectsModule.forRoot([]),
     MaterialModule,
     AuthModule,
-    BooksModule
+    BooksModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

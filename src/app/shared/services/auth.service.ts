@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   getStatus(): Observable<null | UserModel> {
-    return timer(0).pipe(
+    return timer(750).pipe(
       map(() => {
         const userString = localStorage.getItem("auth");
 

@@ -1,6 +1,7 @@
 import { ActionReducerMap, createSelector, MetaReducer } from "@ngrx/store";
 import * as fromAuth from "./auth.reducer";
 import * as fromBooks from "./books.reducer";
+import { logoutMetareducer } from "./logout.metareducer";
 
 export interface State {
   books: fromBooks.State;
@@ -12,7 +13,7 @@ export const reducers: ActionReducerMap<State> = {
   auth: fromAuth.reducer,
 };
 
-export const metaReducers: MetaReducer<State>[] = [];
+export const metaReducers: Array<MetaReducer<State>> = [logoutMetareducer];
 
 /**
  * Books state
@@ -36,11 +37,11 @@ export const selectBooksEarningsTotal = createSelector(
  */
 export const selectAuthState = (state: State) => state.auth;
 export const selectUser = createSelector(selectAuthState, fromAuth.selectUser);
-export const selectGettingStatus = createSelector(
+export const selectGettingAuthStatus = createSelector(
   selectAuthState,
   fromAuth.selectGettingStatus
 );
-export const selectError = createSelector(
+export const selectAuthError = createSelector(
   selectAuthState,
   fromAuth.selectError
 );

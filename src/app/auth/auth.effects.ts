@@ -9,17 +9,15 @@ import { AuthApiActions, AuthUserActions } from "./actions";
 export class AuthApiEffects {
   constructor(private actions$: Actions, private authService: AuthService) {}
 
+  /**
+   * Auto-run this on init
+   */
   checkUserIsLoggedIn$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(AuthUserActions.enter),
-      exhaustMap(() =>
-        this.authService.getStatus().pipe(
-          map((user) => {
-            if (user) return AuthApiActions.isCurrentlyLoggedIn({ user });
-            return AuthApiActions.isCurrentlyNotLoggedIn();
-          })
-        )
-      )
+    return this.authService.getStatus().pipe(
+      map((user) => {
+        if (user) return AuthApiActions.isCurrentlyLoggedIn({ user });
+        return AuthApiActions.isNotCurrentlyLoggedIn();
+      })
     );
   });
 
